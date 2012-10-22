@@ -22,7 +22,7 @@ Canva.init = function(id, width, height)
   this.tool = Pencil; // Выбранный инструмент
   this.drawing = false; // true - если зажата кнопка мыши
 
-  Canva.socket = io.connect('http://localhost:5000')
+  Canva.socket = io.connect(window.location.hostname)
   console.log(Canva.socket);
   Canva.socket.on('draw', function(data) {
     console.log("inside Canva.draw");
@@ -35,17 +35,12 @@ Canva.init = function(id, width, height)
       Canva.tool.start({clientX:x, clientY:y});
 
     } else if( type == 'onmouseup'){
-        if (Canva.drawing)
-        {
-//            var evnt = ie_event(event);
+        //            var evnt = ie_event(event);
             Canva.tool.finish({clientX:x, clientY:y});
-        }
+  
     } else if( type == 'onmousemove'){
-        if (Canva.drawing)
-        {
 //            var evnt = ie_event(event);
             Canva.tool.move({clientX:x, clientY:y});
-        }
     }  
   }
 
@@ -59,15 +54,23 @@ Canva.init = function(id, width, height)
     // Кнопка мыши отпущена, рисование прекращаем
     canv.onmouseup = function(e)
     {
-      Canva.draw(e.clientX, e.clientY, "onmouseup");
-      Canva.socket.emit('drawClick', {x: e.clientX, y: e.clientY, type: "onmouseup"});
+      if (Canva.drawing)
+      {
+
+        Canva.draw(e.clientX, e.clientY, "onmouseup");
+        Canva.socket.emit('drawClick', {x: e.clientX, y: e.clientY, type: "onmouseup"});
+      }
     };
  
     // процесс рисования
     canv.onmousemove = function(e)
     {
-      Canva.draw(e.clientX, e.clientY, "onmousemove");
-      Canva.socket.emit('drawClick', {x: e.clientX, y: e.clientY, type: "onmousemove"});
+       if (Canva.drawing)
+       {
+
+         Canva.draw(e.clientX, e.clientY, "onmousemove");
+         Canva.socket.emit('drawClick', {x: e.clientX, y: e.clientY, type: "onmousemove"});
+       }
      };
 };
  
