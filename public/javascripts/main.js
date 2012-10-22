@@ -22,7 +22,7 @@ Canva.init = function(id, width, height)
   this.tool = Pencil; // Выбранный инструмент
   this.drawing = false; // true - если зажата кнопка мыши
 
-  Canva.socket = io.connect('http://localhost:3000')
+  Canva.socket = io.connect('http://localhost:5000')
   console.log(Canva.socket);
   Canva.socket.on('draw', function(data) {
     console.log("inside Canva.draw");
