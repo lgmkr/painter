@@ -1,0 +1,15 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="http://localhost:3000/socket.io/socket.io.js")
+    script(src='/javascripts/main.js')
+    script(src='/javascripts/pencil.js')
+
+
+  body
+    div
+      canvas#canvas
+    script
+      Canva.init('canvas', window.innerWidth, window.innerHeight); 
